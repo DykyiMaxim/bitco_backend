@@ -1,4 +1,4 @@
-package ua.bitco.plugins
+package bitco.ua.plugins
 
 import io.ktor.server.routing.*
 import io.ktor.http.*
