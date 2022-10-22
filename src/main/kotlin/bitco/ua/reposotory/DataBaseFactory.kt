@@ -2,20 +2,28 @@ package bitco.ua.reposotory
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
+import data.Tables.UserTable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 
 object DataBaseFactory {
 
     fun init(){
         Database.connect(hikari())
+
+
+        transaction {
+            SchemaUtils.create(UserTable)
+        }
     }
 
 
     fun hikari():HikariDataSource{
         val config = HikariConfig()
+
         config.driverClassName = System.getenv("JDBC_DRIVER")
         config.jdbcUrl = System.getenv("DATABASE_URL")
         config.maximumPoolSize = 3
