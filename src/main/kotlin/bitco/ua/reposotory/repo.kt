@@ -3,6 +3,7 @@ package bitco.ua.reposotory
 import bitco.ua.reposotory.DataBaseFactory.dbQuery
 import data.Tables.UserTable
 import data.Tables.UserTable.email
+import data.Tables.UserTable.name
 import data.model.User
 import jdk.nashorn.internal.objects.NativeDebug.map
 import org.jetbrains.exposed.sql.*
@@ -27,10 +28,10 @@ class repo {
         .singleOrNull()
     }
 
-
-
-
-
+    suspend fun changeUserName(old_name: String,newName:String) = dbQuery { UserTable.update (
+        where = {UserTable.name.eq(old_name)},
+        ){nt->nt[UserTable.name]=newName}
+    }
 
 
 
