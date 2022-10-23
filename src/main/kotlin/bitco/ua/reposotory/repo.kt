@@ -1,5 +1,6 @@
 package bitco.ua.reposotory
 
+import authentication.hash
 import bitco.ua.reposotory.DataBaseFactory.dbQuery
 import data.Tables.UserTable
 import data.Tables.UserTable.email
@@ -31,6 +32,16 @@ class repo {
     suspend fun changeUserName(old_name: String,newName:String) = dbQuery { UserTable.update (
         where = {UserTable.name.eq(old_name)},
         ){nt->nt[UserTable.name]=newName}
+    }
+
+    suspend fun changeUserEmail(old_email: String,newEmail:String) = dbQuery { UserTable.update (
+        where = {UserTable.email.eq(old_email)},
+    ){nt->nt[UserTable.email]=newEmail}
+    }
+
+    suspend fun changeUserPassword(old_pass: String,newPass:String) = dbQuery { UserTable.update (
+        where = {UserTable.hpassword.eq(hash(old_pass))},
+    ){nt->nt[UserTable.hpassword]= hash(newPass)}
     }
 
 

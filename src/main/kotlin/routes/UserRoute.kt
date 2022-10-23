@@ -13,7 +13,9 @@ import io.ktor.locations.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import main.kotlin.data.model.ChEmailRequest
 import main.kotlin.data.model.ChNameRequest
+import main.kotlin.data.model.ChPassRequest
 
 import org.jetbrains.exposed.sql.mapLazy
 
@@ -23,15 +25,19 @@ const val USERS ="$API_VERSION/users"
 const val LOGIN_REQUEST ="$USERS/login"
 const val REGISTER_REQUEST ="$USERS/register"
 const val CHANGE_NAME_REQUEST ="$USERS/chname"
+const val CHANGE_EMAIL_REQUEST ="$USERS/chemail"
+const val CHANGE_PASSWORD_REQUEST ="$USERS/chpass"
 
 @Location(REGISTER_REQUEST)
 class UserRegisterRoute
-
 @Location(LOGIN_REQUEST)
 class UserLoginRoute
-
 @Location(CHANGE_NAME_REQUEST)
 class UserCHnameRoute
+@Location(CHANGE_EMAIL_REQUEST)
+class UserChemailRoute
+@Location(CHANGE_PASSWORD_REQUEST)
+class UserChPassRoute
 
 fun Route.UserRoutes(
     db:repo,
@@ -89,7 +95,44 @@ fun Route.UserRoutes(
         }
     }
 
+    post<UserCHnameRoute>{
+        val ChNameRequest = try{
+            call.receive<ChNameRequest>()
+        }catch (e: Exception) {
+            call.respond(HttpStatusCode.BadRequest, SimpleRequest(false, "Missing some fields"))
+            return@post
+        }
+        try{
+            val query = db.changeUserName(ChNameRequest.old_name,ChNameRequest.newName)
+        }catch (e:Exception){call.respond(HttpStatusCode.BadRequest, SimpleRequest(false, "Missing some fields"))}
 
+    }
+
+    post<UserChemailRoute>{
+        val ChEmailRequest = try{
+            call.receive<ChEmailRequest>()
+        }catch (e: Exception) {
+            call.respond(HttpStatusCode.BadRequest, SimpleRequest(false, "Missing some fields"))
+            return@post
+        }
+        try{
+            val query = db.changeUserEmail(ChEmailRequest.old_email,ChEmailRequest.newEmail)
+        }catch (e:Exception){call.respond(HttpStatusCode.BadRequest, SimpleRequest(false, "Missing some fields"))}
+
+    }
+
+    post<UserChPassRoute>{
+        val ChPassRequest = try{
+            call.receive<ChPassRequest>()
+        }catch (e: Exception) {
+            call.respond(HttpStatusCode.BadRequest, SimpleRequest(false, "Missing some fields"))
+            return@post
+        }
+        try{
+            val query = db.changeUserPassword(ChPassRequest.old_pass,ChPassRequest.newPass)
+        }catch (e:Exception){call.respond(HttpStatusCode.BadRequest, SimpleRequest(false, "Missing some fields"))}
+
+    }
 
 }
 
