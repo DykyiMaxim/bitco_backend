@@ -6,7 +6,6 @@ import data.Tables.UserTable
 import data.Tables.UserTable.email
 import data.Tables.UserTable.name
 import data.model.User
-import jdk.nashorn.internal.objects.NativeDebug.map
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 

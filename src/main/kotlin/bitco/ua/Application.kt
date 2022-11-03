@@ -16,12 +16,13 @@ import io.ktor.features.*
 import io.ktor.locations.*
 import io.ktor.server.cio.*
 import io.ktor.server.engine.*
+import io.ktor.server.netty.*
 import routes.UserLoginRoute
 import routes.UserRoutes
 
 
 fun main() {
-    embeddedServer(CIO, port = 8080, host = "127.163.0.1") {
+    embeddedServer(Netty, port = System.getenv("PORT").toInt()) {
         DataBaseFactory.init()
         val db=repo()
         val jwtService = JwtService()

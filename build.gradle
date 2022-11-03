@@ -8,6 +8,7 @@ buildscript {
     }
 }
 
+
 apply plugin: 'kotlin'
 apply plugin: 'application'
 
@@ -21,6 +22,9 @@ sourceSets {
     main.resources.srcDirs = ['resources']
     test.resources.srcDirs = ['testresources']
 }
+tasks.create("stage"){
+    dependsOn("installDist")
+}
 
 repositories {
     mavenLocal()
@@ -30,7 +34,7 @@ repositories {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation "io.ktor:ktor-server-cio:$ktor_version"
+    implementation "io.ktor:ktor-server-netty:$ktor_version"
     implementation "ch.qos.logback:logback-classic:$logback_version"
     implementation "io.ktor:ktor-server-core:$ktor_version"
     implementation "io.ktor:ktor-server-sessions:$ktor_version"
