@@ -14,8 +14,6 @@ object DataBaseFactory {
 
     fun init(){
         Database.connect(hikari())
-
-
         transaction {
             SchemaUtils.create(UserTable)
         }

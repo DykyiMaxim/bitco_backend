@@ -11,6 +11,7 @@ import io.ktor.routing.*
 import io.ktor.http.*
 import io.ktor.sessions.*
 import io.ktor.auth.*
+import io.ktor.auth.jwt.*
 import io.ktor.gson.*
 import io.ktor.features.*
 import io.ktor.locations.*
@@ -21,21 +22,48 @@ import routes.UserLoginRoute
 import routes.UserRoutes
 
 
-fun main() {
-    embeddedServer(Netty, port = System.getenv("PORT").toInt()) {
-        DataBaseFactory.init()
-        val db=repo()
-        val jwtService = JwtService()
-        val hashFunction = {s:String ->hash(s)}
-        install(Authentication) {}
-        install(Locations)
-        install(ContentNegotiation) {
-            gson {}
-        }
-        install(Routing){
-            UserRoutes(db,jwtService,hashFunction)
-        }
 
 
-    }.start(wait = true)
+fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
+
+@Suppress("unused")
+@kotlin.jvm.JvmOverloads
+fun Application.module(testing: Boolean = false) {
+
+    DataBaseFactory.init()
+    val db = repo()
+    val jwtService = JwtService()
+    val hashFunction = { s:String -> hash(s) }
+
+
+
+    install(Authentication) {
+
+        jwt("jwt") {
+
+
+
+        }
+
+    }
+
+    install(Locations)
+
+    install(ContentNegotiation) {
+        gson {
+        }
+    }
+
+    routing {
+
+        get("/") {
+            call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
+        }
+
+        UserRoutes(db,jwtService,hashFunction)
+
+
+
+
+    }
 }
