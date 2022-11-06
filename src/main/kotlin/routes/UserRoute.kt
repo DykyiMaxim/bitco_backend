@@ -7,12 +7,13 @@ import data.model.LoginRequest
 import data.model.RegisterRequest
 import data.model.SimpleRequest
 import data.model.User
-import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.locations.*
-import io.ktor.request.*
-import io.ktor.response.*
-import io.ktor.routing.*
+import io.ktor.locations.post
+import io.ktor.server.application.*
+import io.ktor.server.request.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
 import main.kotlin.data.model.ChEmailRequest
 import main.kotlin.data.model.ChNameRequest
 import main.kotlin.data.model.ChPassRequest
